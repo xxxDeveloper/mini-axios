@@ -1,6 +1,7 @@
 import { parseHeaders } from "./helpers/headers";
 import { AxiosRequestConfig, AxiosResponse } from "./types";
 import { AxiosPromise } from './types/index';
+import { createError } from './helpers/error';
 
 const xhr = (config: AxiosRequestConfig): AxiosPromise => {
   return new Promise((resolve, reject) => {
@@ -18,6 +19,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
 
     request.open(method.toUpperCase(), url, true)
 
+    // 处理请求返回
     request.onreadystatechange = () => {
       if (request.readyState !== 4) return;
 
@@ -39,14 +41,17 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       handleResponse(response)
     }
 
+    // 处理错误
     request.onerror = () => {
-      reject(new Error('Network Error'))
+      reject(createError('Network Error', config, null, request))
     }
 
+    // 处理超时
     request.ontimeout = () => {
-      reject(new Error(`Timeout of ${timeout} ms exceeded`))
+      reject(createError(`Timeout of ${timeout} ms exceeded`, config, 'ECONNABORTED', request))
     }
 
+    // 处理headers
     Object.keys(headers).forEach((name) => {
       if (!data && name.toLocaleLowerCase() === 'content-type') {
         delete headers[name]
@@ -55,13 +60,15 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       }
     })
 
+    // 发送请求
     request.send(data)
 
+    // 处理返回内容
     const handleResponse = (response: AxiosResponse): void => {
       if (response.status >= 200 && response.status <  300) {
         resolve(response)
       } else {
-        reject(new Error(`Request failed whit status code ${request.status}`))
+        reject(createError(`Request failed whit status code ${request.status}`, config, null, request, response))
       }
     }
   })
