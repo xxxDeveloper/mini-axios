@@ -1,4 +1,4 @@
-import { encode, isDate, isObject } from "./utils";
+import { encode, isDate, isPlainObject } from "./utils";
 
 /**
  * 将params拼接至url上
@@ -31,7 +31,7 @@ export const bulidURL = (url: string, params?: any) : string => {
     values.forEach((val) => {
       if (isDate(val)) {
         val = val.toISOString()
-      } else if (isObject(val)) {
+      } else if (isPlainObject(val)) {
         val = JSON.stringify(val)
       }
       parts.push(`${encode(key)}=${encode(val)}`)

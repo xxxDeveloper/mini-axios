@@ -5,9 +5,9 @@ export const isDate = (val: unknown): val is Date => {
   return toString.call(val) === '[object Date]'
 }
 
-// 是否是对象类型
-export const isObject = (val: unknown): val is Object => {
-  return val !== null && typeof val === 'object'
+// 是否是普通对象
+export const isPlainObject = (val: unknown): val is Object => {
+  return toString.call(val) === '[object Object]'
 }
 
 // 进行编码
