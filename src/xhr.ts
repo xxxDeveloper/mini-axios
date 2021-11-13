@@ -1,3 +1,4 @@
+import { parseHeaders } from "./helpers/headers";
 import { AxiosRequestConfig, AxiosResponse } from "./types";
 import { AxiosPromise } from './types/index';
 
@@ -16,7 +17,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     request.onreadystatechange = () => {
       if (request.readyState !== 4) return;
 
-      const responseHeaders = request.getAllResponseHeaders()
+      const responseHeaders = parseHeaders(request.getAllResponseHeaders())
       const responseData =
         (responseType && responseType !== 'text')
           ? request.response
