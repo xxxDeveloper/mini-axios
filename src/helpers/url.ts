@@ -7,7 +7,7 @@ import { encode, isDate, isPlainObject } from "./utils";
  * @param {*} params
  * @returns {*}
  */
-export const bulidURL = (url: string, params?: any) : string => {
+export const buildURL = (url: string, params?: any) : string => {
   if (!params) return url;
 
   // 键值对数组

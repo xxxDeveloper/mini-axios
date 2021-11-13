@@ -1,12 +1,12 @@
-import { bulidURL } from './helpers/url';
-import { AxiosRequestConfig } from './types/index';
+import { buildURL } from './helpers/url';
+import { AxiosPromise, AxiosRequestConfig } from './types/index';
 import xhr from './xhr';
 import { transformRequest } from './helpers/data';
 import { processHeaders } from './helpers/headers';
 
-const axios = (config: AxiosRequestConfig) => {
+const axios = (config: AxiosRequestConfig): AxiosPromise => {
   processConfig(config)
-  xhr(config)
+  return xhr(config)
 }
 
 // 处理配置
@@ -19,7 +19,7 @@ const processConfig =(config: AxiosRequestConfig): void => {
 // 处理URL
 const transformURL = (config: AxiosRequestConfig): string => {
   const { url, params } = config
-  return bulidURL(url, params)
+  return buildURL(url, params)
 }
 
 // 处理data
