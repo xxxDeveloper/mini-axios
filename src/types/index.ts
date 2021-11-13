@@ -19,4 +19,5 @@ export interface AxiosRequestConfig {
   method?: TMethod
   data?: any
   params?: any
+  headers?: any
 }
