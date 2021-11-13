@@ -1,12 +1,14 @@
 import { buildURL } from './helpers/url';
-import { AxiosPromise, AxiosRequestConfig } from './types/index';
+import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from './types/index';
 import xhr from './xhr';
-import { transformRequest } from './helpers/data';
+import { transformRequest, transformResponse } from './helpers/data';
 import { processHeaders } from './helpers/headers';
 
 const axios = (config: AxiosRequestConfig): AxiosPromise => {
   processConfig(config)
-  return xhr(config)
+  return xhr(config).then(res => {
+    return transformResponseData(res)
+  })
 }
 
 // 处理配置
@@ -22,7 +24,7 @@ const transformURL = (config: AxiosRequestConfig): string => {
   return buildURL(url, params)
 }
 
-// 处理data
+// 处理请求的data
 const transformRequestData = (config: AxiosRequestConfig): unknown => {
   return transformRequest(config.data)
 }
@@ -31,6 +33,12 @@ const transformRequestData = (config: AxiosRequestConfig): unknown => {
 const transformHeaders = (config: AxiosRequestConfig): unknown => {
   const { headers = {}, data } = config
   return processHeaders(headers, data)
+}
+
+// 处理返回的data
+const transformResponseData = (res: AxiosResponse): AxiosResponse => {
+  res.data = transformResponse(res.data)
+  return res
 }
 
 export default axios
