@@ -21,3 +21,11 @@ export const encode = (val: string): string => {
     .replace(/%5B/gi, '[')
     .replace(/%5D/gi, ']')
 }
+
+// 混合对象
+export const extend = <T, U>(to: T, from: U): T & U => {
+  for (const key in from) {
+    ;(to as T & U)[key] = from[key] as any
+  }
+  return to as T & U
+}

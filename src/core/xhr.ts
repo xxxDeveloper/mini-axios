@@ -1,7 +1,7 @@
-import { parseHeaders } from "./helpers/headers";
-import { AxiosRequestConfig, AxiosResponse } from "./types";
-import { AxiosPromise } from './types/index';
-import { createError } from './helpers/error';
+import { parseHeaders } from "../helpers/headers";
+import { AxiosRequestConfig, AxiosResponse } from "../types";
+import { AxiosPromise } from '../types/index';
+import { createError } from '../helpers/error';
 
 const xhr = (config: AxiosRequestConfig): AxiosPromise => {
   return new Promise((resolve, reject) => {
@@ -17,7 +17,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       request.timeout = timeout
     }
 
-    request.open(method.toUpperCase(), url, true)
+    request.open(method.toUpperCase(), url!, true)
 
     // 处理请求返回
     request.onreadystatechange = () => {
