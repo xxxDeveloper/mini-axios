@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "./types";
 
-export default function xhr(config: AxiosRequestConfig) {
+const xhr = (config: AxiosRequestConfig) => {
   const {
     data = null,
     url,
@@ -13,3 +13,5 @@ export default function xhr(config: AxiosRequestConfig) {
 
   request.send(data)
 }
+
+export default xhr
