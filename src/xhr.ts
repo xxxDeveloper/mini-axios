@@ -4,7 +4,7 @@ import { AxiosPromise } from './types/index';
 
 const xhr = (config: AxiosRequestConfig): AxiosPromise => {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType } = config
+    const { data = null, url, method = 'get', headers, responseType, timeout } = config
 
     const request = new XMLHttpRequest()
 
@@ -12,10 +12,16 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       request.responseType = responseType
     }
 
+    if (timeout) {
+      request.timeout = timeout
+    }
+
     request.open(method.toUpperCase(), url, true)
 
     request.onreadystatechange = () => {
       if (request.readyState !== 4) return;
+
+      if (request.status === 0) return;
 
       const responseHeaders = parseHeaders(request.getAllResponseHeaders())
       const responseData =
@@ -30,7 +36,15 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
         config,
         request
       }
-      resolve(response)
+      handleResponse(response)
+    }
+
+    request.onerror = () => {
+      reject(new Error('Network Error'))
+    }
+
+    request.ontimeout = () => {
+      reject(new Error(`Timeout of ${timeout} ms exceeded`))
     }
 
     Object.keys(headers).forEach((name) => {
@@ -42,6 +56,14 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     })
 
     request.send(data)
+
+    const handleResponse = (response: AxiosResponse): void => {
+      if (response.status >= 200 && response.status <  300) {
+        resolve(response)
+      } else {
+        reject(new Error(`Request failed whit status code ${request.status}`))
+      }
+    }
   })
 }
 
