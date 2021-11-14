@@ -13,6 +13,7 @@ export default class InterceptorManager<T> {
     this.interceptors = []
   }
 
+  // 添加拦截器
   use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number {
     this.interceptors.push({
       resolved,
@@ -21,12 +22,14 @@ export default class InterceptorManager<T> {
     return this.interceptors.length - 1
   }
 
+  // 删除拦截器
   eject(id: number): void {
     if (this.interceptors[id]) {
       this.interceptors[id] = null
     }
   }
 
+  // 遍历拦截器
   forEach(fn: (interceptor: Interceptor<T>) => void): void {
     this.interceptors.forEach(interceptor => {
       if (interceptor) {
