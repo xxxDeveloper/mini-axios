@@ -2,7 +2,7 @@ import { buildURL } from '../helpers/url';
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types/index';
 import xhr from './xhr';
 import { flattenHeaders } from '../helpers/headers';
-import transform from './transform';
+import transformData from './transformData';
 
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   throwIfCancellationRequested(config)
@@ -15,7 +15,7 @@ export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromis
 // 处理配置
 const processConfig =(config: AxiosRequestConfig): void => {
   config.url = transformURL(config)
-  config.data = transform(config.data, config.headers, config.transformRequest)
+  config.data = transformData(config.data, config.headers, config.transformRequest)
   config.headers = flattenHeaders(config.headers, config.method!)
 }
 
@@ -27,7 +27,7 @@ const transformURL = (config: AxiosRequestConfig): string => {
 
 // 处理响应的data
 const transformResponseData = (res: AxiosResponse): AxiosResponse => {
-  res.data = transform(res.data, res.headers, res.config.transformResponse)
+  res.data = transformData(res.data, res.headers, res.config.transformResponse)
   return res
 }
 
