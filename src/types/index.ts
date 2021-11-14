@@ -83,7 +83,6 @@ export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance
 }
 
-
 export interface AxiosInterceptorManager<T> {
   use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number
 
