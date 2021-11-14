@@ -1,6 +1,7 @@
 import dispatchRequest from "./dispatchRequest";
 import { AxiosRequestConfig, AxiosPromise, Method, AxiosResponse, ResolvedFn, RejectedFn } from '../types/index';
 import InterceptorManager from "./InterceptorManager";
+import mergeConfig from './mergeConfig';
 
 interface Interceptors {
   request: InterceptorManager<AxiosRequestConfig>
@@ -13,10 +14,14 @@ interface PromiseChain<T> {
 }
 
 export default class Axios {
-  // interceptors
+  // 默认配置
+  defaults: AxiosRequestConfig
+
+  // 拦截器
   interceptors: Interceptors
 
-  constructor() {
+  constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>()
@@ -33,6 +38,9 @@ export default class Axios {
     } else {
       config = url
     }
+
+    // 合并配置
+    config = mergeConfig(this.defaults, config)
 
     // 请求链
     const chain: PromiseChain<any>[] = [{
@@ -62,37 +70,37 @@ export default class Axios {
     return promise
   }
 
-  // get
+  // get请求
   get(url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this._requestMethodWithoutData('get', url, config)
   }
 
-  // delete
+  // delete请求
   delete(url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this._requestMethodWithoutData('delete', url, config)
   }
 
-  // head
+  // head请求
   head(url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this._requestMethodWithoutData('head', url, config)
   }
 
-  // options
+  // options请求
   options(url: string, config?: AxiosRequestConfig): AxiosPromise {
     return this._requestMethodWithoutData('options', url, config)
   }
 
-  // post
+  // post请求
   post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this._requestMethodWithData('post', url, data, config)
   }
 
-  // put
+  // put请求
   put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this._requestMethodWithData('put', url, data, config)
   }
 
-  // patch
+  // patch请求
   patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this._requestMethodWithData('patch', url, data, config)
   }

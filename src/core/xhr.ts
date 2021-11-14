@@ -53,7 +53,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
 
     // 处理headers
     Object.keys(headers).forEach((name) => {
-      if (!data && name.toLocaleLowerCase() === 'content-type') {
+      if (!data && name.toLowerCase() === 'content-type') {
         delete headers[name]
       } else {
         request.setRequestHeader(name, headers[name])
