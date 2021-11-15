@@ -2,10 +2,23 @@ import { parseHeaders } from "../helpers/headers";
 import { AxiosRequestConfig, AxiosResponse } from "../types";
 import { AxiosPromise } from '../types/index';
 import { createError } from '../helpers/error';
+import { isURLSameOrigin } from "../helpers/url";
+import cookie from "../helpers/cookie";
 
 const xhr = (config: AxiosRequestConfig): AxiosPromise => {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType, timeout, cancelToken, withCredentials } = config
+    const {
+      data = null,
+      url,
+      method = 'get',
+      headers,
+      responseType,
+      timeout,
+      cancelToken,
+      withCredentials,
+      xsrfCookieName,
+      xsrfHeaderName
+    } = config
 
     const request = new XMLHttpRequest()
 
@@ -53,6 +66,13 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     // 处理超时
     request.ontimeout = () => {
       reject(createError(`Timeout of ${timeout} ms exceeded`, config, 'ECONNABORTED', request))
+    }
+
+    if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
+      const xsrfValue = cookie.read(xsrfCookieName)
+      if (xsrfValue && xsrfHeaderName) {
+        headers[xsrfHeaderName] = xsrfValue
+      }
     }
 
     // 处理headers

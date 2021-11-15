@@ -1,5 +1,10 @@
 import { encode, isDate, isPlainObject } from "./utils";
 
+interface URLOrigin {
+  protocol: string
+  host: string
+}
+
 /**
  * 将params拼接至url上
  *
@@ -53,3 +58,24 @@ export const buildURL = (url: string, params?: any) : string => {
 
   return url
 }
+
+const resolveURL = (url: string): URLOrigin => {
+  urlParsingNode.setAttribute('href', url)
+  const { protocol, host } = urlParsingNode
+
+  return {
+    protocol,
+    host
+  }
+}
+
+// 判断是否是同源
+export const isURLSameOrigin = (requestURL: string): boolean => {
+  const parsedOrigin = resolveURL(requestURL)
+  return (
+    parsedOrigin.protocol === currentOrigin.protocol && parsedOrigin.host === currentOrigin.host
+  )
+}
+
+const urlParsingNode = document.createElement('a')
+const currentOrigin = resolveURL(window.location.href)
