@@ -35,7 +35,7 @@ stratKeysFromVal2.forEach(key => {
   strats[key] = fromVal2Strat
 })
 
-const stratKeysDeepMerge = ['headers']
+const stratKeysDeepMerge = ['headers', 'auth']
 
 // 对headers字段的合并策略
 stratKeysDeepMerge.forEach(key => {
