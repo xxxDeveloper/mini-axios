@@ -10,6 +10,11 @@ export const isPlainObject = (val: unknown): val is Object => {
   return toString.call(val) === '[object Object]'
 }
 
+// 是否是FormData
+export function isFormData(val: any): val is FormData {
+  return typeof val !== 'undefined' && val instanceof FormData
+}
+
 // 进行编码
 export const encode = (val: string): string => {
   return encodeURIComponent(val)
