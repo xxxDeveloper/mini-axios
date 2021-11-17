@@ -21,7 +21,8 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       xsrfHeaderName,
       onDownloadProgress,
       onUploadProgress,
-      auth
+      auth,
+      validateStatus
     } = config
 
     const request = new XMLHttpRequest()
@@ -143,7 +144,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
 
     // 处理返回内容
     const handleResponse = (response: AxiosResponse): void => {
-      if (response.status >= 200 && response.status <  300) {
+      if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
         reject(createError(`Request failed whit status code ${request.status}`, config, null, request, response))

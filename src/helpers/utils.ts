@@ -15,6 +15,10 @@ export function isFormData(val: any): val is FormData {
   return typeof val !== 'undefined' && val instanceof FormData
 }
 
+export function isUrlSearchParams(val: any): val is URLSearchParams {
+  return typeof val !== 'undefined' && val instanceof URLSearchParams
+}
+
 // 进行编码
 export const encode = (val: string): string => {
   return encodeURIComponent(val)
