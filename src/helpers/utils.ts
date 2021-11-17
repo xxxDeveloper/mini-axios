@@ -11,12 +11,22 @@ export const isPlainObject = (val: unknown): val is Object => {
 }
 
 // 是否是FormData
-export function isFormData(val: any): val is FormData {
+export const isFormData = (val: any): val is FormData => {
   return typeof val !== 'undefined' && val instanceof FormData
 }
 
-export function isUrlSearchParams(val: any): val is URLSearchParams {
+export const isUrlSearchParams = (val: any): val is URLSearchParams => {
   return typeof val !== 'undefined' && val instanceof URLSearchParams
+}
+
+// 是否是绝对地址
+export const isAbsoluteURL = (url: string): boolean => {
+  return /(^[a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+}
+
+// URL拼接
+export const combineURL = (baseURL: string, relativeURL?: string): string => {
+  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
 }
 
 // 进行编码
