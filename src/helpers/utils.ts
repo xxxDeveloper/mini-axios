@@ -12,7 +12,7 @@ export const isPlainObject = (val: unknown): val is Object => {
 
 // 是否是FormData
 export const isFormData = (val: any): val is FormData => {
-  return typeof val !== 'undefined' && val instanceof FormData
+  return toString.call(val) === '[object FormData]'
 }
 
 export const isUrlSearchParams = (val: any): val is URLSearchParams => {
