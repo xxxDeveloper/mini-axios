@@ -6,8 +6,7 @@ import {
   extend,
   deepMerge
 } from '../../src/helpers/utils'
-const { JSDOM } = require("jsdom")
-const jsdom = new JSDOM('')
+
 
 describe('helpers:util', () => {
   describe('isXXX', () => {
@@ -22,7 +21,7 @@ describe('helpers:util', () => {
     })
 
     test('should validate FormData', () => {
-      expect(isFormData(new jsdom.window.FormData())).toBeTruthy()
+      expect(isFormData(new FormData())).toBeTruthy()
       expect(isFormData({})).toBeFalsy()
     })
 
