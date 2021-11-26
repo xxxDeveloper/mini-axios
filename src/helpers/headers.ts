@@ -31,17 +31,17 @@ export const processHeaders = (headers: any, data: any): any => {
 // 处理接口返回的headers
 export const parseHeaders = (headers: string): any => {
   let parsed = Object.create(null)
-  if (!headers)  return parsed;
+  if (!headers) {
+    return parsed
+  }
 
   headers.split('\r\n').forEach(line => {
-    let [key, val] = line.split(':')
+    let [key, ...vals] = line.split(':')
     key = key.trim().toLowerCase()
-
-    if (!key) return;
-    if (val) {
-      val = val.trim()
+    if (!key) {
+      return
     }
-
+    let val = vals.join(':').trim()
     parsed[key] = val
   })
 
