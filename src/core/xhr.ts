@@ -12,7 +12,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       data = null,
       url,
       method = 'get',
-      headers,
+      headers = {},
       responseType,
       timeout,
       cancelToken,
