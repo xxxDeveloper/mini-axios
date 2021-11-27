@@ -63,7 +63,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
     function addEvents(): void {
        // 处理请求返回
       request.onreadystatechange = () => {
-        if (request.readyState !== 4) return;
+        if (request.readyState !== XMLHttpRequest.DONE) return;
 
         if (request.status === 0) return;
 
@@ -123,7 +123,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
 
       // 处理headers
       Object.keys(headers).forEach((name) => {
-        if (!data && name.toLowerCase() === 'content-type') {
+        if (data === null && name.toLowerCase() === 'content-type') {
           delete headers[name]
         } else {
           request.setRequestHeader(name, headers[name])
