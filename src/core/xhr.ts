@@ -83,14 +83,14 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
         handleResponse(response)
       }
 
-      // 处理错误
-      request.onerror = () => {
-        reject(createError('Network Error', config, null, request))
-      }
-
       // 处理超时
       request.ontimeout = () => {
         reject(createError(`Timeout of ${timeout} ms exceeded`, config, 'ECONNABORTED', request))
+      }
+
+      // 处理错误
+      request.onerror = () => {
+        reject(createError('Network Error', config, null, request))
       }
 
       // 下载
@@ -147,7 +147,7 @@ const xhr = (config: AxiosRequestConfig): AxiosPromise => {
       if (!validateStatus || validateStatus(response.status)) {
         resolve(response)
       } else {
-        reject(createError(`Request failed whit status code ${request.status}`, config, null, request, response))
+        reject(createError(`Request failed with status code ${request.status}`, config, null, request, response))
       }
     }
   })
